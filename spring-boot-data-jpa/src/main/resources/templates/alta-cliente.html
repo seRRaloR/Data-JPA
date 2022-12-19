@@ -13,7 +13,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Navbar</a>
 			<button class="navbar-toggler" type="button"
@@ -38,7 +38,7 @@
 	<div class="container">
 		<h1
 			class="text-primary 
-		border border-danger border-3 border-start-0 border-end-0
+		border border-dark border-4 border-start-0 border-end-0
 		bg-info bg-opacity-10"
 			th:text="${titulo}"></h1>
 
@@ -63,6 +63,14 @@
 				<label class="col-sm-2 col-form-label">Email</label>
 				<div class="col-sm-4">
 					<input type="email" th:field="*{email}" class="form-control" />
+				</div>
+			</div>
+
+			<!-- Hay que introducir la fecha en formato dd/mm/aaaa -->
+			<div class="form-group row">
+				<label class="col-sm-2 col-form-label">Fecha</label>
+				<div class="col-sm-4">
+					<input type="text" th:field="*{createAt}" class="form-control" />
 				</div>
 			</div>
 
