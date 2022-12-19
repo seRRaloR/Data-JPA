@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jrla.springboot.app.models.dao.IClienteDao;
 import com.jrla.springboot.app.models.entities.Cliente;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class ClienteController {
@@ -34,14 +37,19 @@ public class ClienteController {
 	public String altaCliente(Map<String, Object> modelo) {
 		Cliente cliente = new Cliente();
 		
-		modelo.put("titulo", "Formulario de alta de clientes");
+		modelo.put("titulo", "Nuevo cliente");
 		modelo.put("cliente", cliente);
 
 		return "alta-cliente";
 	}
 
 	@RequestMapping(value="/alta-cliente", method = RequestMethod.POST)
-	public String guardar(Cliente cliente) {
+	public String guardar(@Valid Cliente cliente, BindingResult resultado, Model modelo) {
+		if (resultado.hasErrors()) {
+			modelo.addAttribute("titulo", "Nuevo Cliente");
+			return "alta-cliente";
+		}
+		
 		clienteDao.save(cliente);
 		
 		return "redirect:listar";
