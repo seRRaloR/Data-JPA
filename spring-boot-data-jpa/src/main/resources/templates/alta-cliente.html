@@ -45,21 +45,21 @@
 		<form th:action="@{/alta-cliente}" th:object="${cliente}"
 			method="post">
 
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-sm-2 col-form-label">Nombre</label>
 				<div class="col-sm-4">
 					<input type="text" th:field="*{nombre}" class="form-control" />
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-sm-2 col-form-label">Apellido</label>
 				<div class="col-sm-4">
 					<input type="text" th:field="*{apellido}" class="form-control" />
 				</div>
 			</div>
 
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-sm-2 col-form-label">Email</label>
 				<div class="col-sm-4">
 					<input type="email" th:field="*{email}" class="form-control" />
@@ -67,7 +67,7 @@
 			</div>
 
 			<!-- Hay que introducir la fecha en formato dd/mm/aaaa -->
-			<div class="form-group row">
+			<div class="mb-3 row">
 				<label class="col-sm-2 col-form-label">Fecha</label>
 				<div class="col-sm-4">
 					<input type="text" th:field="*{createAt}" class="form-control" />
