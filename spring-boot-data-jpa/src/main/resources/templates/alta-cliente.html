@@ -14,35 +14,41 @@
 
 <body>
 
-	<h1 th:text="${titulo}"></h1>
+	<div class="container">
+		<h1
+			class="text-primary 
+		border border-danger border-3 border-start-0 border-end-0
+		bg-info bg-opacity-10"
+			th:text="${titulo}"></h1>
 
-	<form th:action="@{/alta-cliente}" th:object="${cliente}" method="post">
-		<table>
+		<form th:action="@{/alta-cliente}" th:object="${cliente}"
+			method="post">
+			<table class="table table-bordered">
 
 
-			<tr>
-				<td>Nombre</td>
-				<td><input type="text" th:field="*{nombre}" /></td>
-			</tr>
+				<tr>
+					<td style="width: 150px">Nombre</td>
+					<td><input type="text" th:field="*{nombre}" class="form-control" /></td>
+				</tr>
 
-			<tr>
-				<td>Apellido</td>
-				<td><input type="text" th:field="*{apellido}" /></td>
-			</tr>
+				<tr>
+					<td>Apellido</td>
+					<td><input type="text" th:field="*{apellido}" class="form-control" /></td>
+				</tr>
 
-			<tr>
-				<td>Email</td>
-				<td><input type="email" th:field="*{email}" /></td>
-			</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="email" th:field="*{email}" class="form-control" /></td>
+				</tr>
 
-			<tr>
-				<td><input type="submit" value="Alta cliente" /></td>
-			</tr>
+				<tr>
+					<td><input type="submit" value="Alta cliente" class="btn btn-success" /></td>
+				</tr>
 
-		</table>
+			</table>
 			<input type="hidden" th:field="*{id}" />
-	</form>
-	<div th:text="'Este es el id que se pasa = ' + ${cliente.id}"></div>
+		</form>
+	</div>
 
 </body>
 </html>
