@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.jrla.springboot.app.models.dao.IClienteDao;
 import com.jrla.springboot.app.models.entities.Cliente;
+import com.jrla.springboot.app.models.service.ClienteServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -24,14 +24,13 @@ import jakarta.validation.Valid;
 public class ClienteController {
 
 	@Autowired
-	@Qualifier("clienteDaoJPA")
-	private IClienteDao clienteDao;
+	private ClienteServiceImpl clienteService;
 	
 	//@RequestMapping(value="/listar", method=RequestMethod.GET)
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de clientes");
-		model.addAttribute("clientes", clienteDao.findAll());
+		model.addAttribute("clientes", clienteService.findAll());
 		return "lista-clientes";
 	}
 
@@ -52,7 +51,7 @@ public class ClienteController {
 		Cliente cliente = null;
 		
 		if (id != null && id>0) {
-			cliente = clienteDao.findOne(id);
+			cliente = clienteService.findOne(id);
 			modelo.put("titulo","Edición de cliente");
 			modelo.put("cliente",cliente);
 		} else {
@@ -69,7 +68,7 @@ public class ClienteController {
 			return "alta-cliente";
 		}
 		
-		clienteDao.save(cliente);
+		clienteService.save(cliente);
 		status.setComplete();
 		return "redirect:/listar";
 	}
@@ -77,7 +76,7 @@ public class ClienteController {
 	@RequestMapping(value="/baja-cliente/{id}")
 	public String eliminar(@PathVariable(value="id") Long id) {
 		if (id != null && id>0) {
-			clienteDao.delete(id);
+			clienteService.delete(id);
 		}
 		
 		return "redirect:/listar";
