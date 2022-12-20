@@ -1,16 +1,13 @@
 package com.jrla.springboot.app.models.dao;
 
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
 
 import com.jrla.springboot.app.models.entities.Cliente;
 
-public interface IClienteDao {
+/*
+ * No hce falta anotar con @Component porque hereda de CrudRepository
+ * (https://stackoverflow.com/questions/44069367/repository-not-necessary-when-implementing-jparepository)
+ */
+public interface IClienteDao extends CrudRepository<Cliente, Long>{
 
-	public List<Cliente> findAll();
-	
-	public void save(Cliente cliente);
-	
-	public Cliente findOne(Long id);
-	
-	public void delete(Long id);
 }
