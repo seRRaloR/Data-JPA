@@ -71,7 +71,16 @@ public class ClienteController {
 		
 		clienteDao.save(cliente);
 		status.setComplete();
-		return "redirect:listar";
+		return "redirect:/listar";
+	}
+
+	@RequestMapping(value="/baja-cliente/{id}")
+	public String eliminar(@PathVariable(value="id") Long id) {
+		if (id != null && id>0) {
+			clienteDao.delete(id);
+		}
+		
+		return "redirect:/listar";
 	}
 
 }

@@ -17,8 +17,14 @@ public class ClienteDaoImpl implements IClienteDao {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
+	public Cliente findOne(Long id) {
+		return em.find(Cliente.class, id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
 	public List<Cliente> findAll() {
 		return em.createQuery("from Cliente").getResultList();
 	}
@@ -35,8 +41,10 @@ public class ClienteDaoImpl implements IClienteDao {
 	}
 
 	@Override
-	public Cliente findOne(Long id) {
-		return em.find(Cliente.class, id);
+	@Transactional
+	public void delete(Long id) {
+		em.remove(this.findOne(id));
+		
 	}
 
 }

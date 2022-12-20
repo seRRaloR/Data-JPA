@@ -53,6 +53,7 @@
 					<th>Correo</th>
 					<th>Fecha</th>
 					<th>Editar</th>
+					<th>Eliminar</th>
 				</tr>
 
 			</thead>
@@ -66,6 +67,8 @@
 					<td th:text="${cliente.createAt}"></td>
 					<td><a class="btn btn-primary btn-xs" th:href="@{/alta-cliente/} + ${cliente.id}"
 						th:text="'Editar'"></a></td>
+					<td><a class="btn btn-danger btn-xs" th:href="@{/baja-cliente/} + ${cliente.id}"
+						th:text="'Eliminar'" onclick="return confirm('Seguro que desea eliminar el cliente?');"></a></td>
 				</tr>
 			</tbody>
 		</table>
