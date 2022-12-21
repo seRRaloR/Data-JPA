@@ -1,5 +1,8 @@
 package com.jrla.springboot.app.util.paginator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 public class PageRender<T> {
@@ -10,10 +13,12 @@ public class PageRender<T> {
 	private int numTotalPaginas;
 	private int numElemPorPagina;
 	private int numPaginaActual;
+	private List<PageItem> paginas;
 	
 	public PageRender(String url, Page<T> page) {
 		this.url = url;
 		this.page = page;
+		this.paginas = new ArrayList<PageItem>();
 		
 		this.numElemPorPagina = page.getSize();
 		this.numTotalPaginas = page.getTotalPages();
@@ -33,7 +38,41 @@ public class PageRender<T> {
 			pagDesde = this.numPaginaActual - this.numElemPorPagina/2;
 			pagHasta = this.numElemPorPagina;
 		}
+		
+		for (int i=0; i < pagHasta; i++) {
+			paginas.add(new PageItem(pagDesde + i, numPaginaActual == pagDesde + i));
+		}
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public int getNumTotalPaginas() {
+		return numTotalPaginas;
+	}
+
+	public int getNumPaginaActual() {
+		return numPaginaActual;
+	}
+
+	public List<PageItem> getPaginas() {
+		return paginas;
 	}
 	
+	public boolean isFirst() {
+		return page.isFirst();
+	}
 	
+	public boolean isLast() {
+		return page.isLast();
+	}
+
+	public boolean isHasNext() {
+		return page.hasNext();
+	}
+
+	public boolean isHasPrevious() {
+		return page.hasPrevious();
+	}
 }
