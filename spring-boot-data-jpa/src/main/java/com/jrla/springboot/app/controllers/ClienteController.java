@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,17 +33,21 @@ public class ClienteController {
 	@Autowired
 	private ClienteServiceImpl clienteService;
 	
+	@Value("${paginacion.numero.elementos.pagina}")
+	private int numElementosPorPagina;
+	
 	//@RequestMapping(value="/listar", method=RequestMethod.GET)
 	@GetMapping("/listar")
 	public String listar(@RequestParam(name="page", defaultValue="0") int page, Model model) {
 		
-		Pageable pageRequest = PageRequest.of(page, 4);
+		Pageable pageRequest = PageRequest.of(page, numElementosPorPagina);
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
 		
 		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
 		
 		model.addAttribute("titulo", "Listado de clientes");
 		model.addAttribute("clientes", clientes);
+		model.addAttribute("page", pageRender);
 		return "lista-clientes";
 	}
 
