@@ -1,5 +1,9 @@
 package com.jrla.springboot.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jrla.springboot.app.models.entities.Cliente;
@@ -86,10 +91,32 @@ public class ClienteController {
 	}
 
 	@RequestMapping(value="/alta-cliente", method = RequestMethod.POST)
-	public String guardar(@Valid Cliente cliente, BindingResult resultado, Model modelo, RedirectAttributes flash, SessionStatus status) {
+	public String guardar(@Valid Cliente cliente
+			, BindingResult resultado
+			, Model modelo
+			, @RequestParam("file") MultipartFile foto
+			,RedirectAttributes flash
+			, SessionStatus status) {
+		
 		if (resultado.hasErrors()) {
 			modelo.addAttribute("titulo", "Nuevo Cliente");
 			return "alta-cliente";
+		}
+		
+		if (!foto.isEmpty()) {
+			Path directorioRecursos = Paths.get("src//main//resources//static//uploads");
+			String rootPath = directorioRecursos.toFile().getAbsolutePath();
+			
+			try {
+				byte[] bytes = foto.getBytes();
+				Path rutaCompleta = Paths.get(rootPath.concat("//").concat(foto.getOriginalFilename()));
+				Files.write(rutaCompleta, bytes);
+				flash.addFlashAttribute("infoMessage","Archivo ".concat(foto.getOriginalFilename()).concat(" cargado correctamente!"));
+				cliente.setFoto(foto.getOriginalFilename());
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		String mensajeFlash = (cliente.getId() == null)? "creado" : "modificado";
