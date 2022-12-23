@@ -41,6 +41,22 @@ public class ClienteController {
 	@Value("${paginacion.numero.elementos.pagina}")
 	private int numElementosPorPagina;
 	
+	@GetMapping("/detalle-cliente/{id}")
+	public String detalle(@PathVariable(value="id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
+		Cliente cliente = clienteService.findOne(id);
+		
+		if (cliente == null) {
+			flash.addFlashAttribute("errorMessage","El cliente no existe!");
+			return "redirect:/listar";
+		}
+		
+		modelo.put("titulo", "Detalle cliente: " + cliente.getNombre());
+		modelo.put("cliente", cliente);
+		
+		
+		return "detalle-cliente";
+	}
+	
 	//@RequestMapping(value="/listar", method=RequestMethod.GET)
 	@GetMapping("/listar")
 	public String listar(@RequestParam(name="page", defaultValue="0") int page, Model model) {
@@ -111,7 +127,7 @@ public class ClienteController {
 				byte[] bytes = foto.getBytes();
 				Path rutaCompleta = Paths.get(rootPath.concat("//").concat(foto.getOriginalFilename()));
 				Files.write(rutaCompleta, bytes);
-				flash.addFlashAttribute("infoMessage","Archivo ".concat(foto.getOriginalFilename()).concat(" cargado correctamente!"));
+				flash.addFlashAttribute("infoMessage","Archivo '".concat(foto.getOriginalFilename()).concat("' cargado correctamente!"));
 				cliente.setFoto(foto.getOriginalFilename());
 				
 			} catch (IOException e) {
