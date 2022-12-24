@@ -11,7 +11,8 @@
 
 			<div class="card-body">
 
-				<img class="img-thumbnail rounded float-left" style="max-width: 25%;" alt="${cliente.foto}" src="@{'/uploads/'} + ${cliente.foto}" />
+				<img class="img-thumbnail rounded float-start" style="max-width: 25%;" 
+				th:alt="${cliente.foto}" th:src="@{'/uploads/' + ${cliente.foto}}"/>
 				
 				<ul class="list-group">
 				
