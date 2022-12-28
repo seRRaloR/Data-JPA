@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +43,8 @@ public class ClienteController {
 	
 	@Value("${paginacion.numero.elementos.pagina}")
 	private int numElementosPorPagina;
+	
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	@GetMapping("/detalle-cliente/{id}")
 	public String detalle(@PathVariable(value="id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
@@ -121,14 +126,17 @@ public class ClienteController {
 		
 		if (!foto.isEmpty()) {
 			
-			String rootPath = "C://Temp//Uploads";
+			String uniqueFileName = UUID.randomUUID().toString() + "_" + foto.getOriginalFilename();
+			Path rootPath = Paths.get("uploads").resolve(uniqueFileName);
+			Path rootAbsolutePath = rootPath.toAbsolutePath();
+			
+			log.info("rootPath: " + rootPath);
+			log.info("rootAbsolutePath: " + rootAbsolutePath);
 			
 			try {
-				byte[] bytes = foto.getBytes();
-				Path rutaCompleta = Paths.get(rootPath.concat("//").concat(foto.getOriginalFilename()));
-				Files.write(rutaCompleta, bytes);
-				flash.addFlashAttribute("infoMessage","Archivo '".concat(foto.getOriginalFilename()).concat("' cargado correctamente!"));
-				cliente.setFoto(foto.getOriginalFilename());
+				Files.copy(foto.getInputStream(), rootAbsolutePath);
+				flash.addFlashAttribute("infoMessage","Archivo '".concat(uniqueFileName).concat("' cargado correctamente!"));
+				cliente.setFoto(uniqueFileName);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
