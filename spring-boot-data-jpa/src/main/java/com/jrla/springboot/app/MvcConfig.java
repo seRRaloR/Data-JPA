@@ -13,6 +13,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	
+	/* Se va a cambiar el método de carga de imágenes 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		
@@ -24,6 +25,7 @@ public class MvcConfig implements WebMvcConfigurer {
 		// Se pone, como parámetro del 1er método, lo que en la plantilla
 		registry.addResourceHandler("/uploads/**").addResourceLocations(resourcePath);
 	}
+	*/
 	
 
 }
